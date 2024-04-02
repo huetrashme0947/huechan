@@ -41,6 +41,12 @@ INSERT INTO `flags` (`name`, `value`) VALUES
 ('maintenance_full', 0),
 ('maintenance_limited', 0);
 
+CREATE TABLE `groups` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `color` mediumint(8) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE `notifications` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `uid` bigint(20) UNSIGNED DEFAULT NULL,
@@ -158,6 +164,9 @@ ALTER TABLE `boards`
 ALTER TABLE `flags`
   ADD UNIQUE KEY `flag` (`name`);
 
+ALTER TABLE `groups`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`);
 
@@ -190,6 +199,10 @@ ALTER TABLE `votes`
 
 ALTER TABLE `bans`
   MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `groups`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `groups` AUTO_INCREMENT = 10;
 
 ALTER TABLE `notifications`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
