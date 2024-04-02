@@ -42,6 +42,7 @@
 		// Get roles of user asking for post and author of post
 		$user_role = checkRole($database, $uid);
 		$author_role = checkRole($database, $results[0][6]);
+		$author_uid = $results[0][6];
 
 		// If Post is removed, check if User is either staff or the author. Deny access anyway, if !$explicit (only grant access if user is specifically asking for this Post)
 		if (($results[0][7] == 1 && !$explicit) || ($results[0][7] == 1 && $user_role === null && correctIDOutputFromDB($results[0][6]) != $uid)) { return 0; }
@@ -55,7 +56,8 @@
 			"content" => formatPostContent(htmlentities($results[0][3])),
 			"name" => htmlentities($results[0][4]),
 			"datetime" => gmdate("D, d M Y H:i:s", DateTime::createFromFormat("Y-m-d H:i:s", $results[0][5])->getTimestamp())." GMT",
-			"flags" => []
+			"flags" => [],
+			"groups" => []
 		];
 
 		// Check if user is either the author or staff. If staff, check if post is not from another user with higher or equal status
@@ -90,6 +92,9 @@
 		// Check if poll attached
 		$poll = getPollAssoc($database, $id, (checkIfUserHasVotedInPoll($database, $post["id"], $uid) !== false || checkIfPollHasEnded($database, $post["id"])));
 		if ($poll != null) { $post["poll"] = $poll; }
+
+		// Get groups
+		$post["groups"] = getGroupDetails($database, getGroups($database, $author_uid));
 
 		return $post;
 	}

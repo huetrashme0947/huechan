@@ -114,6 +114,8 @@
 				document.getElementById("postlist-error").innerHTML = "This Post was removed by Staff due to a violation of the Rules.";
 			<?php endif; ?>
 
+			document.getElementById("name-op").innerHTML = getNameLine(<?=$post["name"] ? $post["name"] : "''"?>, JSON.parse('<?=json_encode($post["groups"])?>'));
+
 			<?php if ($uid == null): ?>
 				if (first) {
 					new bootstrap.Modal(document.getElementById("cookie-modal"), {
@@ -394,8 +396,7 @@
 						<?php endif; ?>
 						<span class="dropdown-toggle" id="post-<?=$post_id?>-dropdown" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
 							<?php
-								if (in_array("staff", $post["flags"])) { echo '<b class="text-danger">'.($post["name"] != "" ? $post["name"] : "Anonymous")." (Staff)</b> "; }
-								else { echo '<b class="text-success">'.($post["name"] != "" ? $post["name"] : "Anonymous")."</b> "; }
+								echo '<span id="name-op"></span> ';
 								echo '<span id="date-op">'.$post["datetime"].'</span><script>document.getElementById("date-op").innerHTML = getTimeString(document.getElementById("date-op").innerHTML, true)</script>';
 							?>
 						</span>

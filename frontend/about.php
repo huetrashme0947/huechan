@@ -168,7 +168,7 @@
 			<div class="center-h"><a href="https://php.net">The PHP Project</a></div>
 			<div class="center-h">Everyone who made this project possible!</div>
 			<br>
-			<div class="center-h">Huechan v1.0.0-beta19</div>
+			<div class="center-h">Huechan v1.0.0-beta20</div>
 			<div class="center-h">&copy; 2022<?=((int)date("Y") > 2022 ? ("-".date("Y")) : "")?> HUE_TrashMe</div>
 		</div>
 		<br><br>

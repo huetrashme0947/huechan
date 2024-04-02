@@ -467,6 +467,39 @@ function getRemainingTimeStr(time) {
 	return ~~(timeDiff/86400)+"d remaining";
 }
 
+function getNameLine(name, groups) {
+	let iconsOutput = "";
+	let output = "";
+
+	console.log(groups);
+
+	// First group is highest, so use it for coloring
+	if (groups.length != 0 && (groups[0][0] == 0 || groups[0][0] == 1)) {
+		// Staff
+		output += '<b class="text-danger">'
+	}
+	
+	groups.forEach(group => {
+		// Check for icon
+		if (group[3] != null) {
+			iconsOutput += ` <img width="24" data-bs-hover="tooltip" data-bs-placement="top" title="${group[1]}" src="${group[3]}">`;
+		}
+
+		if (output != "" || group[2] == null) return;
+		output += `<b style="color: #${group[2]}">`;
+	});
+
+	if (output == "") output += '<b class="text-success">';
+
+	output += (name != "" ? name : "Anonymous") + iconsOutput;
+
+	// If none of the groups did have an icon, output the name of the highest group
+	if (groups.length != 0 && iconsOutput == "") output += " (" + groups[0][1] + ")";
+
+	output += "</b>";
+	return output;
+}
+
 function getPostUI(post, mixed = true) {
 	var id = post["id"];
 	var board = post["board"];
@@ -485,14 +518,14 @@ function getPostUI(post, mixed = true) {
 	var imagePath = post["image"];
 	var replies = post["replies"];
 	var hasPoll = typeof post["poll"] != "undefined";
+	var groups = post["groups"];
 
 	// Create string for element
 	var postUI = '<div id="post-'+id+'-spacer" style="margin-top: 16px;"></div><div id="post-'+id+'" class="post-op bg-dark"><div class="dropend">';
 	if (isPinned) { postUI += '<i class="fas fa-thumbtack fa-sm" data-bs-hover="tooltip" data-bs-placement="top" title="Pinned"></i><span style="margin-left: 8px;"></span>'; }
 	else if (isRemoved) { postUI += '<i class="fas fa-eye-slash fa-sm" data-bs-hover="tooltip" data-bs-placement="top" title="Only visible to staff"></i><span style="margin-left: 8px;"></span>'; }
 	postUI += '<span class="dropdown-toggle" id="post-'+id+'-dropdown" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">';
-	if (isStaff) { postUI += '<b class="text-danger">'+(name != "" ? name : "Anonymous")+' (Staff)</b>'; }
-	else { postUI += '<b class="text-success">'+(name != "" ? name : "Anonymous")+'</b>'; }
+	postUI += getNameLine(name, groups);
 	if (mixed) { postUI += ' (/'+board+'/)'; }
 	postUI += '&nbsp;'+datetime+'<span style="margin-left: 2px;"></span></span><span style="margin-left: 8px;"></span>';
 	if (noReplies) { postUI += '<a data-bs-hover="tooltip" data-bs-placement="top" title="Replying disabled" style="cursor: not-allowed;"><i class="fas fa-reply"></i><span style="margin-left: 6px;"></span>'+replies+'</a>'; }

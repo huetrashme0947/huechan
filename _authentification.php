@@ -80,10 +80,45 @@
 
 	function checkRole($database, $uid) {
 		// Retrieve role column of corresponding UID. If there is any, return role, else return null
-		$statement = $database->prepare("SELECT `role` FROM `roles` WHERE `uid` = CONV(?, 16, 10);");
+		$statement = $database->prepare("SELECT `role` FROM `roles` WHERE `uid` = CONV(?, 16, 10) AND (`role` = 0 OR `role` = 1);");
 		$statement->execute([$uid]);
 		$results = $statement->fetchAll();
 		return $results == [] ? null : $results[0][0];
+	}
+
+	function getGroups($database, $uid) {
+		$statement = $database->prepare("SELECT `role` FROM `roles` WHERE `uid` = CONV(?, 16, 10) ORDER BY `role` ASC;");
+		$statement->execute([$uid]);
+		$results = $statement->fetchAll();
+
+		$output = [];
+		foreach ($results as $group) {
+			array_push($output, $group[0]);
+		}
+		return $output;
+	}
+
+	function getGroupDetails($database, $groups) {
+		$output = [];
+		foreach ($groups as $group_id) {
+			// Staff group has default values, so send them
+			if ($group_id == 0 || $group_id == 1) {
+				array_push($output, [$group_id, "Staff", null, get_image_path("group-staff")]);
+				continue;
+			}
+
+			$statement = $database->prepare("SELECT `name`, CONV(`color`, 10, 16) FROM `groups` WHERE `id` = ?;");
+			$statement->execute([$group_id]);
+			$result = $statement->fetchAll();
+			if ($result == []) { continue; }
+
+			// Check for image
+			$image_url = get_image_path("group-".$group_id);
+
+			array_push($output, [$group_id, $result[0][0], $result[0][1], $image_url]);
+		}
+
+		return $output;
 	}
 
 	// Deprecated, does not work anymore
