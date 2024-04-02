@@ -48,6 +48,13 @@ CREATE TABLE `notifications` (
   `contents` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE `notificationreadreceipts` (
+  `id` int(11) NOT NULL,
+  `notification` int(11) NOT NULL,
+  `uid` bigint(20) UNSIGNED NOT NULL,
+  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE `polls` (
   `post` bigint(20) UNSIGNED NOT NULL,
   `start` timestamp NULL DEFAULT NULL,
@@ -154,6 +161,9 @@ ALTER TABLE `flags`
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `notificationreadreceipts`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `polls`
   ADD PRIMARY KEY (`post`);
 
@@ -183,6 +193,9 @@ ALTER TABLE `bans`
 
 ALTER TABLE `notifications`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `notificationreadreceipts`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `removals`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
