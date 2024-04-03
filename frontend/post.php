@@ -114,7 +114,7 @@
 				document.getElementById("postlist-error").innerHTML = "This Post was removed by Staff due to a violation of the Rules.";
 			<?php endif; ?>
 
-			document.getElementById("name-op").innerHTML = getNameLine(<?=$post["name"] ? $post["name"] : "''"?>, JSON.parse('<?=json_encode($post["groups"])?>'));
+			document.getElementById("name-op").innerHTML = getNameLine(<?=$post["name"] ? ("'".$post["name"]."'") : "''"?>, JSON.parse('<?=json_encode($post["groups"])?>'));
 
 			<?php if ($uid == null): ?>
 				if (first) {
