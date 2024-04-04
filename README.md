@@ -25,4 +25,4 @@ Apache (or the web server you're using) needs to be configured to route all requ
 - `/ext/images/*` > `/ext/images/`
 - `/*` > `/index.php`
 
-For PHP, the default php.ini should work just fine. MariaDB needs to have an existing database (create a new empty one) and a user account for the backend to be using. Execute `/setup.sql` on your database, then you're database is good to go. Lastly, enter the connection and user credentials into `/_database.ts`. Your server should now be set up and ready to be used.
+For PHP, the default php.ini should work just fine. MariaDB needs to have an existing database (create a new empty one) and a user account for the backend to be using. Execute `/setup.sql` on your database, then you're database is good to go. Lastly, enter the connection and user credentials into `/_database.php`. Your server should now be set up and ready to be used.
