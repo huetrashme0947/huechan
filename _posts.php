@@ -52,7 +52,7 @@
 			"id" => $id,
 			"board" => $results[0][1],
 			"inreplyto" => correctIDOutputFromDB($results[0][2]),
-			"contentRaw" => htmlentities($results[0][3]),
+			"contentRaw" => $results[0][3],
 			"content" => formatPostContent(htmlentities($results[0][3])),
 			"name" => htmlentities($results[0][4]),
 			"datetime" => gmdate("D, d M Y H:i:s", DateTime::createFromFormat("Y-m-d H:i:s", $results[0][5])->getTimestamp())." GMT",
