@@ -25,7 +25,7 @@
 	if ($user_is_banned && getBanType($database, $uid, $user_ip) == 2) { http_response_code(403); exit("You are currently banned from using Huechan."); }
 
 	// List and delete own posts, should be accessed by everyone but permanently banned users as all their posts get removed anyway when banning
-	if (strstr($url, "/ext/get_my_posts?") === $url) {
+	if (strstr($url, "/ext/get_my_posts") === $url) {
 		include("ext/get_my_posts.php");
 		exit();
 	} else if ($url == "/ext/delete_post") {
