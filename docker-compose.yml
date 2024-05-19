@@ -1,0 +1,33 @@
+version: '3'
+services:
+  web:
+    build: './apache_docker'
+    container_name: apache-huechan
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+  mariadb:
+    image: mariadb:10.11
+    container_name: mariadb-huechan
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: mariadb-huechan
+      MYSQL_ROOT_PASSWORD: root-password
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin-huechan
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: mariadb
+    depends_on:
+      - mariadb
+volumes:
+  db_data:
